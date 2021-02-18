@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Table;
 
 class TableController extends Controller
 {
@@ -13,7 +14,9 @@ class TableController extends Controller
      */
     public function index()
     {
-        //
+        $tab = Table::all();
+
+         return response()->json($tab,200);
     }
 
     /**
@@ -23,7 +26,7 @@ class TableController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -34,7 +37,21 @@ class TableController extends Controller
      */
     public function store(Request $request)
     {
-        //
+    $val = $request->validate([
+    'name'=>'required',
+    'type'=>'required'
+    ]);
+    $tab = new Table();
+    $tab->name = $request->name;
+    $tab->type = $request->type;
+    $save=$tab->save();
+    if($save)
+    {
+        return response()->json(['status'=>'success','message'=>'Successfully save table data']);
+    }
+    else{
+         return response()->json(['status'=>'Error','message'=>'somethine went fishy']);
+         }
     }
 
     /**
@@ -45,7 +62,8 @@ class TableController extends Controller
      */
     public function show($id)
     {
-        //
+//         $tab = Table::find($id);
+//         return response()->json($tab,200);
     }
 
     /**
@@ -56,7 +74,8 @@ class TableController extends Controller
      */
     public function edit($id)
     {
-        //
+        $tab = Table::find($id);
+        return response()->json($tab,200);
     }
 
     /**
@@ -68,7 +87,25 @@ class TableController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+
+         $val = $request->validate([
+             'name'=>'required',
+             'type'=>'required'
+             ]);
+            $tab = Table::find($id);
+             $tab->name = $request->name;
+             $tab->type = $request->type;
+             $save=$tab->save();
+             if($save)
+             {
+                 return response()->json(['status'=>'success','message'=>'Successfully save table data']);
+             }
+             else{
+                  return response()->json(['status'=>'Error','message'=>'somethine went fishy']);
+                  }
+
+
     }
 
     /**
@@ -79,6 +116,14 @@ class TableController extends Controller
      */
     public function destroy($id)
     {
-        //
+         $tab = Table::find($id);
+         $del =$tab->delete();
+         if($del)
+         {
+             return response()->json(['status'=>'success','message'=>'Deleted Table successfully']);
+         }
+         else{
+            return response()->json(['status'=>'Error','message'=>' Table was not Deleted']);
+         }
     }
 }

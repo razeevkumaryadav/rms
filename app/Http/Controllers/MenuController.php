@@ -51,7 +51,7 @@ class MenuController extends Controller
             'price'=>'required',
             'food_type'=>'required',
         ]);
-      
+
         $subcate = new SubCategoryMenu();
         $subcate->category_menu_id = $request->category_menu_id;
         $subcate->image = $request->image;
@@ -122,7 +122,7 @@ class MenuController extends Controller
     {
         $subcategorymenu = SubCategoryMenu::find($id);
         $categorymenu = CategoryMenu::all();
-        
+
         return response()->json(["subcategorymenu"=>$subcategorymenu,"categorymenu"=>$categorymenu],200);
     }
 
@@ -151,6 +151,14 @@ class MenuController extends Controller
 
     public function updatesubcategorymenu(Request $request, $id)
     {
+     dd($request->all());
+         $validate = $request->validate([
+                    'category_menu_id'=>'required',
+                    'name'=>'required',
+                    'unit'=>'required',
+                    'price'=>'required',
+                    'food_type'=>'required',
+                ]);
         $subcate = SubCategoryMenu::find($id);
         $subcate->category_menu_id = $request->category_menu_id;
         $subcate->image = $request->image;
@@ -213,7 +221,7 @@ class MenuController extends Controller
         {
             return response()->json([
                 'status'=>'success',
-                'message'=>'menu deleted successfully'
+                'message'=>' Sub menu deleted successfully'
             ]);
         }
         else
