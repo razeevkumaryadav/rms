@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\TempOrder;
+use App\Models\Table;
 class OrderController extends Controller
 {
     /**
@@ -13,9 +14,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-//        $tab = Table::all();
-//         $order = TempOrder::all();
-//         return response()->json(['table'=>$tab,'order'=>$order],200);
+        $tab = Table::all();
+        $order = TempOrder::all();
+        return response()->json(['table'=>$tab,'order'=>$order],200);
     }
 
     /**
@@ -44,20 +45,20 @@ class OrderController extends Controller
                             'food_type'=>'required'
                             ]);
     $temp = new TempOrder();
-
-    foreach($request->sub_category_menu_id as index=>$scm)
+     
+    foreach($request->sub_category_menu_id as $index=>$scm)
     {
-     $arr[]=[
-                $temp->category_menu_id = $request->category_menu_id[index],
-                $temp->sub_category_menu_id = $request->sub_category_menu_id[index],
-                $temp->quantity = $request->quantity[index],
-                $temp->table_id = request->table_id,
-                $temp->food_type = request->food_type[index],
-                $temp->user_id =1
-
-            ];
+          
+                $temp->category_menu_id = $request['category_menu_id'][$index];
+                $temp->sub_category_menu_id = $scm;
+                $temp->quantity = $request['quantity'][$index];
+                $temp->table_id = $request->table_id;
+                $temp->food_type = $request['food_type'][$index];
+                $temp->user_id =1;
+             $save =   $temp->save();
+        
      }
-    $save= $temp->insert($arr);
+    // $save= $temp->insert($arr);
     if($save)
     {
         return response()->json(['status'=>'success','message'=>'order placed successfully']);
@@ -77,7 +78,8 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        //
+        $temp = TempOrder::find($id);
+        return response()->json($temp,200);
     }
 
     /**
@@ -100,7 +102,45 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $temp = TempOrder::where('table_id',$id);
+        $val = $request->validate([
+            'category_menu_id'=>'required',
+            'sub_category_menu_id'=>'required',
+            'quantity'=>'required',
+            'table_id'=>'required',
+            'food_type'=>'required'
+            ]);
+
+
+        foreach($request->sub_category_menu_id as $index=>$scm)
+        {
+
+            // $temp->category_menu_id = $request['category_menu_id'][$index];
+            // $temp->sub_category_menu_id = $scm;
+            // $temp->quantity = $request['quantity'][$index];
+            // $temp->table_id = $request->table_id;
+            // $temp->food_type = $request['food_type'][$index];
+            // $temp->user_id =1;
+            // $save = $temp->save();
+         $save =  $temp->update([
+            'category_menu_id' => $request['category_menu_id'][$index],
+            'sub_category_menu_id' => $scm,
+            'quantity' => $request['quantity'][$index],
+            'table_id' => $request->table_id,
+            'food_type' => $request['food_type'][$index],
+            'user_id' =>1
+            ]);
+
+        }
+// $save= $temp->insert($arr);
+        if($save)
+        {
+            return response()->json(['status'=>'success','message'=>'order Updated successfully']);
+        }
+        else
+        {
+        return response()->json(['status'=>'Error','message'=>'Something went fishy']);
+        }
     }
 
     /**

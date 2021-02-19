@@ -34,4 +34,4 @@ Route::resource('/table','TableController');
 // |        | GET|HEAD  | api/table/{table}               | table.show    | App\Http\Controllers\TableController@show                  | api        |
 // |        | PUT|PATCH | api/table/{table}               | table.update  | App\Http\Controllers\TableController@update                | api        |
 // |        | DELETE    | api/table/{table}
-
+Route::resource('/order','OrderController');
