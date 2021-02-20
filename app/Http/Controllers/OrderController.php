@@ -46,10 +46,10 @@ class OrderController extends Controller
                             'food_type'=>'required'
                             ]);
     $temp = new TempOrder();
-     
+
     foreach($request->sub_category_menu_id as $index=>$scm)
     {
-          
+
                 $temp->category_menu_id = $request['category_menu_id'][$index];
                 $temp->sub_category_menu_id = $scm;
                 $temp->quantity = $request['quantity'][$index];
@@ -57,7 +57,7 @@ class OrderController extends Controller
                 $temp->food_type = $request['food_type'][$index];
                 $temp->user_id =1;
              $save =   $temp->save();
-        
+
      }
     // $save= $temp->insert($arr);
     if($save)
@@ -80,7 +80,8 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $temp = TempOrder::where('table_id',$id);
+        $temp = TempOrder::where('table_id',$id)->orderBy('table_id')->get();
+//         dd($temp);
         if($temp)
         {
         return response()->json($temp,200);
@@ -125,7 +126,7 @@ class OrderController extends Controller
 
         foreach($request->sub_category_menu_id as $index=>$scm)
         {
-            
+
          $save =  $temp->update([
             'category_menu_id' => $request['category_menu_id'][$index],
             'sub_category_menu_id' => $scm,

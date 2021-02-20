@@ -62,8 +62,8 @@ class TableController extends Controller
      */
     public function show($id)
     {
-//         $tab = Table::find($id);
-//         return response()->json($tab,200);
+        $tab = Table::findOrFail($id);
+        return response()->json($tab,200);
     }
 
     /**
@@ -120,7 +120,7 @@ class TableController extends Controller
          $del =$tab->delete();
          if($del)
          {
-             return response()->json(['status'=>'success','message'=>'Deleted Table successfully']);
+             return response()->json(['status'=>'success','message'=>' Table Deleted successfully']);
          }
          else{
             return response()->json(['status'=>'Error','message'=>' Table was not Deleted']);
