@@ -74,7 +74,7 @@ class TableController extends Controller
      */
     public function edit($id)
     {
-        $tab = Table::find($id);
+        $tab = Table::findOrFail($id);
         return response()->json($tab,200);
     }
 
@@ -93,7 +93,7 @@ class TableController extends Controller
              'name'=>'required',
              'type'=>'required'
              ]);
-            $tab = Table::find($id);
+            $tab = Table::findOrFail($id);
              $tab->name = $request->name;
              $tab->type = $request->type;
              $save=$tab->save();
@@ -116,7 +116,7 @@ class TableController extends Controller
      */
     public function destroy($id)
     {
-         $tab = Table::find($id);
+         $tab = Table::findOrFail($id);
          $del =$tab->delete();
          if($del)
          {

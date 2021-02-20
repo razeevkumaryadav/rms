@@ -114,13 +114,13 @@ class MenuController extends Controller
      */
     public function editcategorymenu($id)
     {
-        $categorymenu = CategoryMenu::find($id);
+        $categorymenu = CategoryMenu::findOrFail($id);
         return $categorymenu->toJson();
     }
 
     public function editsubcategorymenu($id)
     {
-        $subcategorymenu = SubCategoryMenu::find($id);
+        $subcategorymenu = SubCategoryMenu::findOrFail($id);
         $categorymenu = CategoryMenu::all();
 
         return response()->json(["subcategorymenu"=>$subcategorymenu,"categorymenu"=>$categorymenu],200);
@@ -135,7 +135,7 @@ class MenuController extends Controller
      */
     public function updatecategorymenu(Request $request, $id)
     {
-        $category = CategoryMenu::find($id);
+        $category = CategoryMenu::findOrFail($id);
         $category->name = $request->name;
         $update = $category->update();
 
@@ -151,7 +151,7 @@ class MenuController extends Controller
 
     public function updatesubcategorymenu(Request $request, $id)
     {
-     dd($request->all());
+    //  dd($request->all());
          $validate = $request->validate([
                     'category_menu_id'=>'required',
                     'name'=>'required',
@@ -159,7 +159,7 @@ class MenuController extends Controller
                     'price'=>'required',
                     'food_type'=>'required',
                 ]);
-        $subcate = SubCategoryMenu::find($id);
+        $subcate = SubCategoryMenu::findOrFail($id);
         $subcate->category_menu_id = $request->category_menu_id;
         $subcate->image = $request->image;
         $subcate->name= $request->name;
@@ -192,7 +192,7 @@ class MenuController extends Controller
      */
     public function destroycategorymenu($id)
     {
-        $categorymenu = CategoryMenu::find($id);
+        $categorymenu = CategoryMenu::findOrFail($id);
         $delete = $categorymenu->delete();
 
         if($delete)
@@ -214,7 +214,7 @@ class MenuController extends Controller
 
     public function destroysubcategorymenu($id)
     {
-        $categorymenu = SubCategoryMenu::find($id);
+        $categorymenu = SubCategoryMenu::findOrFail($id);
         $delete = $categorymenu->delete();
 
         if($delete)

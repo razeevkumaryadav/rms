@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\TempOrder;
 use App\Models\Table;
+use App\Models\SubCategoryMenu;
 class OrderController extends Controller
 {
     /**
@@ -15,8 +16,8 @@ class OrderController extends Controller
     public function index()
     {
         $tab = Table::all();
-        $order = TempOrder::all();
-        return response()->json(['table'=>$tab,'order'=>$order],200);
+        $subcategorymenu = SubCategoryMenu::with('categorymenus')->get();
+        return response()->json(['table'=>$tab,'subcategorymenu'=>$subcategorymenu],200);
     }
 
     /**
@@ -61,6 +62,7 @@ class OrderController extends Controller
     // $save= $temp->insert($arr);
     if($save)
     {
+
         return response()->json(['status'=>'success','message'=>'order placed successfully']);
     }
     else
@@ -78,8 +80,15 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $temp = TempOrder::find($id);
+        $temp = TempOrder::where('table_id',$id);
+        if($temp)
+        {
         return response()->json($temp,200);
+        }
+        else
+        {
+            return response()->json(['status'=>'404','message'=>'resources not found']);
+        }
     }
 
     /**
@@ -103,6 +112,8 @@ class OrderController extends Controller
     public function update(Request $request, $id)
     {
         $temp = TempOrder::where('table_id',$id);
+        if($temp)
+        {
         $val = $request->validate([
             'category_menu_id'=>'required',
             'sub_category_menu_id'=>'required',
@@ -114,14 +125,7 @@ class OrderController extends Controller
 
         foreach($request->sub_category_menu_id as $index=>$scm)
         {
-
-            // $temp->category_menu_id = $request['category_menu_id'][$index];
-            // $temp->sub_category_menu_id = $scm;
-            // $temp->quantity = $request['quantity'][$index];
-            // $temp->table_id = $request->table_id;
-            // $temp->food_type = $request['food_type'][$index];
-            // $temp->user_id =1;
-            // $save = $temp->save();
+            
          $save =  $temp->update([
             'category_menu_id' => $request['category_menu_id'][$index],
             'sub_category_menu_id' => $scm,
@@ -132,7 +136,7 @@ class OrderController extends Controller
             ]);
 
         }
-// $save= $temp->insert($arr);
+
         if($save)
         {
             return response()->json(['status'=>'success','message'=>'order Updated successfully']);
@@ -140,6 +144,10 @@ class OrderController extends Controller
         else
         {
         return response()->json(['status'=>'Error','message'=>'Something went fishy']);
+        }
+        }
+        else{
+            return response()->json(['status'=>'404','message'=>'requested result not found on server']);
         }
     }
 
@@ -151,6 +159,15 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $temp = TempOrder::findOrFail($id);
+        if($temp)
+        {
+            $temp->delete();
+
+            return response()->json(['status'=>'success','message'=>'Billed Print Success fully']);
+        }
+        else{
+            return response()->json(['status'=>'success','message'=>'Order not found']);
+        }
     }
 }
