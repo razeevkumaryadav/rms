@@ -15,7 +15,7 @@ class CreateTempOrdersTable extends Migration
     {
         Schema::create('temp_orders', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('category_menu_id');
+            $table->bigInteger('category_menu_id')->nullable();
             $table->bigInteger('sub_category_menu_id');
             $table->string('quantity');
             $table->string('food_type');

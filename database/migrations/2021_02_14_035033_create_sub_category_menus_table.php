@@ -15,7 +15,7 @@ class CreateSubCategoryMenusTable extends Migration
     {
         Schema::create('sub_category_menus', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('category_menu_id');
+            $table->bigInteger('category_menu_id')->nullable();
             $table->string('image')->nullable();
             $table->string('name');
             $table->string('unit');

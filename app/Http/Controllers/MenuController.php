@@ -45,7 +45,7 @@ class MenuController extends Controller
     {
         // dd($request->all());
         $validate = $request->validate([
-            'category_menu_id'=>'required',
+            // 'category_menu_id'=>'required',
             'name'=>'required',
             'unit'=>'required',
             'price'=>'required',
@@ -53,7 +53,7 @@ class MenuController extends Controller
         ]);
 
         $subcate = new SubCategoryMenu();
-        $subcate->category_menu_id = $request->category_menu_id;
+        $subcate->category_menu_id = $request->category_menu_id?$request->category_menu_id:0;
         $subcate->image = $request->image;
         $subcate->name= $request->name;
         $subcate->unit = $request->unit;
@@ -102,8 +102,8 @@ class MenuController extends Controller
      }
      public function showsubcategorymenu()
      {
-         $category = CategoryMenu::with('subcategorymenus')->get();
-         return response()->json(['menu'=>$category]);
+         $category = SubCategoryMenu::all();
+         return response()->json(['food'=>$category]);
      }
 
     /**

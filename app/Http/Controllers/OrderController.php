@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\TempOrder;
 use App\Models\Table;
 use App\Models\CategoryMenu;
+use App\Models\SubCategoryMenu;
+
 class OrderController extends Controller
 {
     /**
@@ -16,7 +18,7 @@ class OrderController extends Controller
     public function index()
     {
         $tab = Table::all();
-        $subcategorymenu = CategoryMenu::with('subcategorymenus')->get();
+        $subcategorymenu = SubCategoryMenu::all();
         return response()->json(['table'=>$tab,'menu'=>$subcategorymenu],200);
     }
 
@@ -39,7 +41,7 @@ class OrderController extends Controller
     public function store(Request $request)
     {
     $val = $request->validate([
-                            'category_menu_id'=>'required',
+                            // 'category_menu_id'=>'required',
                             'sub_category_menu_id'=>'required',
                             'quantity'=>'required',
                             'table_id'=>'required',
@@ -50,7 +52,7 @@ class OrderController extends Controller
     foreach($request->sub_category_menu_id as $index=>$scm)
     {
 
-                $temp->category_menu_id = $request['category_menu_id'][$index];
+                $temp->category_menu_id = $request['category_menu_id'][$index]?$request['category_menu_id'][$index]:0;
                 $temp->sub_category_menu_id = $scm;
                 $temp->quantity = $request['quantity'][$index];
                 $temp->table_id = $request->table_id;
@@ -116,7 +118,7 @@ class OrderController extends Controller
         if($temp)
         {
         $val = $request->validate([
-            'category_menu_id'=>'required',
+            // 'category_menu_id'=>'required',
             'sub_category_menu_id'=>'required',
             'quantity'=>'required',
             'table_id'=>'required',
@@ -128,7 +130,7 @@ class OrderController extends Controller
         {
 
          $save =  $temp->update([
-            'category_menu_id' => $request['category_menu_id'][$index],
+            'category_menu_id' => $request['category_menu_id'][$index]?$request['category_menu_id'][$index]:0,
             'sub_category_menu_id' => $scm,
             'quantity' => $request['quantity'][$index],
             'table_id' => $request->table_id,

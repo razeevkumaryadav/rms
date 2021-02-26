@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Table;
+use App\Models\TableType;
 
 class TableController extends Controller
 {
@@ -14,8 +15,8 @@ class TableController extends Controller
      */
     public function index()
     {
-        $tab = Table::all();
-
+        $tab = TableType::with('tableitems')->get();
+        // $tab->tables->makeHidden('table_type_id');
          return response()->json(['table'=>$tab],200);
     }
 
@@ -24,9 +25,29 @@ class TableController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function showtabletype()
     {
+        $tt = TableType::all();
+        return response()->json(['tabletype'=>$tt]);
+    }
+    public function createtabletype(Request $request)
+    {
+        $val = $request->validate(([
+            'type'=>'required'
+        ]));
 
+        $ttype = new TableType();
+        $ttype->type = $request->type;
+        $save= $ttype->save();
+
+        if($save)
+        {
+            return response()->json(['status'=>'success','message'=>'Successfully save table data']);
+        }
+        else{
+             return response()->json(['status'=>'Error','message'=>'somethine went fishy']);
+             }
+        
     }
 
     /**
@@ -39,11 +60,11 @@ class TableController extends Controller
     {
     $val = $request->validate([
     'name'=>'required',
-    'type'=>'required'
+    'table_type_id'=>'required'
     ]);
     $tab = new Table();
     $tab->name = $request->name;
-    $tab->type = $request->type;
+    $tab->table_type_id = $request->table_type_id;
     $save=$tab->save();
     if($save)
     {

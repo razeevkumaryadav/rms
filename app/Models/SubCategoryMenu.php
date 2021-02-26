@@ -10,7 +10,7 @@ class SubCategoryMenu extends Model
 {
     use HasFactory;
     protected $fillable = ['name','unit','price','image','food_type','category_menu_id'];
-    protected $hidden = ['created_at','updated_at'];
+    protected $hidden = ['created_at','updated_at','category_menu_id'];
 
     public function categorymenus()
     {
