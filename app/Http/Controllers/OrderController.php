@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\TempOrder;
 use App\Models\Table;
-use App\Models\SubCategoryMenu;
+use App\Models\CategoryMenu;
 class OrderController extends Controller
 {
     /**
@@ -16,8 +16,8 @@ class OrderController extends Controller
     public function index()
     {
         $tab = Table::all();
-        $subcategorymenu = SubCategoryMenu::with('categorymenus')->get();
-        return response()->json(['table'=>$tab,'subcategorymenu'=>$subcategorymenu],200);
+        $subcategorymenu = CategoryMenu::with('subcategorymenus')->get();
+        return response()->json(['table'=>$tab,'menu'=>$subcategorymenu],200);
     }
 
     /**
@@ -84,7 +84,7 @@ class OrderController extends Controller
 //         dd($temp);
         if($temp)
         {
-        return response()->json($temp,200);
+        return response()->json(['order'=>$temp],200);
         }
         else
         {

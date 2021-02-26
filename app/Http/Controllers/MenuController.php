@@ -96,14 +96,14 @@ class MenuController extends Controller
      */
     public function showcategorymenu()
     {
-        $category = CategoryMenu::select('id','name')->get();
-        return $category->toJson();
-
+        $categorymenu = CategoryMenu::select('id','name')->get();
+//         return $category->toJson();
+            return response()->json(['categorymenu'=>$categorymenu]);
      }
      public function showsubcategorymenu()
      {
-         $subcategory = SubCategoryMenu::with('categorymenus')->get();
-         return $subcategory->toJson();
+         $category = CategoryMenu::with('subcategorymenus')->get();
+         return response()->json(['menu'=>$category]);
      }
 
     /**
@@ -115,7 +115,7 @@ class MenuController extends Controller
     public function editcategorymenu($id)
     {
         $categorymenu = CategoryMenu::findOrFail($id);
-        return $categorymenu->toJson();
+        return response()->json(['categorymenu'=>$categorymenu]);
     }
 
     public function editsubcategorymenu($id)

@@ -16,7 +16,7 @@ class TableController extends Controller
     {
         $tab = Table::all();
 
-         return response()->json($tab,200);
+         return response()->json(['table'=>$tab],200);
     }
 
     /**
@@ -63,7 +63,7 @@ class TableController extends Controller
     public function show($id)
     {
         $tab = Table::findOrFail($id);
-        return response()->json($tab,200);
+        return response()->json(['table'=>$tab],200);
     }
 
     /**
@@ -75,7 +75,7 @@ class TableController extends Controller
     public function edit($id)
     {
         $tab = Table::findOrFail($id);
-        return response()->json($tab,200);
+        return response()->toJson(['table'=>$tab],200);
     }
 
     /**
