@@ -30,6 +30,7 @@ Route::delete('/delete/subcategorymenu/{id}','MenuController@destroysubcategorym
 
 Route::resource('/table','TableController');
 Route::post('/tabletypes','TableController@createtabletype');
+Route::get('/tabletypes','TableController@showtabletype');
 //  api/table                       | table.index   | App\Http\Controllers\TableController@index                 | api        |
 // |        | POST      | api/table                       | table.store   | App\Http\Controllers\TableController@store                 | api        |
 // |        | GET|HEAD  | api/table/{table}               | table.show    | App\Http\Controllers\TableController@show                  | api        |
