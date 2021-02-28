@@ -7,6 +7,7 @@ use App\Models\TempOrder;
 use App\Models\Table;
 use App\Models\CategoryMenu;
 use App\Models\SubCategoryMenu;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -89,10 +90,10 @@ class OrderController extends Controller
 //         })->orderBy('table_id')->get();
 
 $temp=DB::table('temp_orders')->join('sub_category_menus','temp_orders.sub_category_menu_id','=','sub_category_menus.id')
-    ->select(['temp_orders.*','sub_category_menus.price'])
+    ->select(['temp_orders.*','sub_category_menus.name','sub_category_menus.unit','sub_category_menus.price'])
     ->where('temp_orders.table_id',$id)
     ->get();
-         dd($temp);
+//          dd($temp);
         if($temp)
         {
         return response()->json(['order'=>$temp],200);
