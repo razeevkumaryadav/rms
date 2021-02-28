@@ -19,7 +19,7 @@ class OrderController extends Controller
     {
         $tab = Table::all();
         $subcategorymenu = SubCategoryMenu::all();
-        return response()->json(['table'=>$tab,'menu'=>$subcategorymenu],200);
+        return response()->json(['table'=>$tab,'food'=>$subcategorymenu],200);
     }
 
     /**

@@ -18,8 +18,8 @@ class CreateSubCategoryMenusTable extends Migration
             $table->bigInteger('category_menu_id')->nullable();
             $table->string('image')->nullable();
             $table->string('name');
-            $table->string('unit');
-            $table->string('price');
+            $table->integer('unit');
+            $table->integer('price');
             $table->string('food_type');
             $table->timestamps();
         });

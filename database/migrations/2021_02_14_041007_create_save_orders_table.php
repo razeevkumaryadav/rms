@@ -17,7 +17,7 @@ class CreateSaveOrdersTable extends Migration
             $table->id();
             $table->bigInteger('category_menu_id');
             $table->bigInteger('sub_category_menu_id');
-            $table->string('quantity');
+            $table->integer('quantity');
             $table->string('food_type');
             $table->string('table_id');
             $table->string('user_id')->nullable();
