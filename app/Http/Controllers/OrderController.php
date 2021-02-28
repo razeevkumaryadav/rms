@@ -82,8 +82,17 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $temp = TempOrder::where('table_id',$id)->orderBy('table_id')->get();
-//         dd($temp);
+//         $temp = TempOrder::where('table_id',$id)->where('sub_category_menu_id', function($q){
+//             $q->select('id')
+//             ->from('sub_category_menus')
+//             ->where('temp_orders.sub_category_menu_id', 'sub_category_menus.sub_category_menu_id');
+//         })->orderBy('table_id')->get();
+
+$temp=DB::table('temp_orders')->join('sub_category_menus','temp_orders.sub_category_menu_id','=','sub_category_menus.id')
+    ->select(['temp_orders.*','sub_category_menus.price'])
+    ->where('temp_orders.table_id',$id)
+    ->get();
+         dd($temp);
         if($temp)
         {
         return response()->json(['order'=>$temp],200);
