@@ -47,7 +47,7 @@ class TableController extends Controller
         else{
              return response()->json(['status'=>'Error','message'=>'somethine went fishy']);
              }
-        
+
     }
 
     /**
@@ -65,6 +65,7 @@ class TableController extends Controller
     $tab = new Table();
     $tab->name = $request->name;
     $tab->table_type_id = $request->table_type_id;
+    $tab->status = $request->status?$request->status:0;
     $save=$tab->save();
     if($save)
     {
@@ -116,7 +117,8 @@ class TableController extends Controller
              ]);
             $tab = Table::findOrFail($id);
              $tab->name = $request->name;
-             $tab->type = $request->type;
+             $tab->table_type_id = $request->table_type_id;
+             $tab->status = $request->status;
              $save=$tab->save();
              if($save)
              {

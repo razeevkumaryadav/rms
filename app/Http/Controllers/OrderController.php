@@ -41,12 +41,13 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+//     dd($request->all());
     $val = $request->validate([
                             // 'category_menu_id'=>'required',
                             'sub_category_menu_id'=>'required',
                             'quantity'=>'required',
                             'table_id'=>'required',
-                            'food_type'=>'required'
+//                             'food_type'=>'required'
                             ]);
     $temp = new TempOrder();
 
@@ -57,15 +58,16 @@ class OrderController extends Controller
                 $temp->sub_category_menu_id = $scm;
                 $temp->quantity = $request['quantity'][$index];
                 $temp->table_id = $request->table_id;
-                $temp->food_type = $request['food_type'][$index];
+//                 $temp->food_type = $request['food_type'][$index];
                 $temp->user_id =1;
-             $save =   $temp->save();
+               $save =   $temp->save();
 
      }
     // $save= $temp->insert($arr);
     if($save)
     {
-
+        $table = Table::findOrFail($request->table_id);
+        $table->update(['status'=>1]);
         return response()->json(['status'=>'success','message'=>'order placed successfully']);
     }
     else
@@ -83,6 +85,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
+//     dd($id);
 //         $temp = TempOrder::where('table_id',$id)->where('sub_category_menu_id', function($q){
 //             $q->select('id')
 //             ->from('sub_category_menus')
@@ -90,8 +93,9 @@ class OrderController extends Controller
 //         })->orderBy('table_id')->get();
 
 $temp=DB::table('temp_orders')->join('sub_category_menus','temp_orders.sub_category_menu_id','=','sub_category_menus.id')
-    ->select(['temp_orders.*','sub_category_menus.name','sub_category_menus.unit','sub_category_menus.price'])
+    ->select(['temp_orders.sub_category_menu_id','temp_orders.quantity','temp_orders.table_id','sub_category_menus.name','sub_category_menus.unit','sub_category_menus.price','sub_category_menus.food_type'])
     ->where('temp_orders.table_id',$id)
+//     ->orderBy('temp_orders.table_id')
     ->get();
 //          dd($temp);
         if($temp)
@@ -105,7 +109,6 @@ $temp=DB::table('temp_orders')->join('sub_category_menus','temp_orders.sub_categ
     }
 
     /**
-     * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

@@ -18,7 +18,6 @@ class CreateTempOrdersTable extends Migration
             $table->bigInteger('category_menu_id')->nullable();
             $table->bigInteger('sub_category_menu_id');
             $table->integer('quantity');
-            $table->string('food_type');
             $table->string('table_id');
             $table->string('user_id')->nullable();
             $table->timestamps();
