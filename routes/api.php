@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
+Route::middleware(['auth:api'])->group(function () {
+
 // });
 // Route::get('/show/categorymenu','MenuController@showcategorymenu');
 Route::get('/show/subcategorymenu','MenuController@showsubcategorymenu');
@@ -37,3 +37,12 @@ Route::get('/tabletypes','TableController@showtabletype');
 // |        | PUT|PATCH | api/table/{table}               | table.update  | App\Http\Controllers\TableController@update                | api        |
 // |        | DELETE    | api/table/{table}
 Route::resource('/order','OrderController');
+
+// user controlle
+// Route::post('/register','UserController@register');
+// Route::post('/login','UserController@login');
+Route::get('/user','UserController@details');
+
+});
+Route::post('/register','UserController@register');
+Route::post('/login','UserController@login');

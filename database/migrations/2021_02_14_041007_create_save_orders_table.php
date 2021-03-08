@@ -15,7 +15,7 @@ class CreateSaveOrdersTable extends Migration
     {
         Schema::create('save_orders', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('category_menu_id');
+            $table->bigInteger('category_menu_id')->nullable();
             $table->bigInteger('sub_category_menu_id');
             $table->integer('quantity');
             $table->string('table_id');

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\TempOrder;
 use App\Models\Table;
 use App\Models\CategoryMenu;
+use App\Models\SaveOrder;
 use App\Models\SubCategoryMenu;
 use Illuminate\Support\Facades\DB;
 
@@ -181,10 +182,28 @@ $temp=DB::table('temp_orders')->join('sub_category_menus','temp_orders.sub_categ
      */
     public function destroy($id)
     {
-        $temp = TempOrder::findOrFail($id);
+        $tempo = TempOrder::where('table_id',$id)->get();
+
+        foreach($tempo as $index=>$tem)
+        {
+            $vartemp[] =[
+                'sub_category_menu_id'=>$tem['sub_category_menu_id'],
+                'quantity'=> $tem['quantity'],
+                'table_id'=>$tem['table_id'],
+                'user_id'=>$tem['user_id'],
+                'category_menu_id'=>0,
+                'created_at'=> \Carbon\Carbon::now(),
+                'updated_at'=> \Carbon\Carbon::now()
+           ];
+        }
+        // dd($vartemp);
+        $temp = SaveOrder::insert($vartemp);
         if($temp)
         {
-            $temp->delete();
+            $table = Table::findOrFail($id);
+            $table->update(['status'=>0]);
+            $tempor = TempOrder::where('table_id',$id);
+            $tempor->delete();
 
             return response()->json(['status'=>'success','message'=>'Billed Print Success fully']);
         }
