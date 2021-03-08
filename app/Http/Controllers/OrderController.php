@@ -41,7 +41,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-//     dd($request->all());
+    // dd($request->all());
     $val = $request->validate([
                             // 'category_menu_id'=>'required',
                             'sub_category_menu_id'=>'required',
@@ -49,21 +49,27 @@ class OrderController extends Controller
                             'table_id'=>'required',
 //                             'food_type'=>'required'
                             ]);
-    $temp = new TempOrder();
+    // $temp = new TempOrder();
 
     foreach($request->sub_category_menu_id as $index=>$scm)
     {
 
-                $temp->category_menu_id = $request['category_menu_id'][$index]?$request['category_menu_id'][$index]:0;
-                $temp->sub_category_menu_id = $scm;
-                $temp->quantity = $request['quantity'][$index];
-                $temp->table_id = $request->table_id;
-//                 $temp->food_type = $request['food_type'][$index];
-                $temp->user_id =1;
-               $save =   $temp->save();
+//                 $temp->category_menu_id = $request['category_menu_id'][$index]?$request['category_menu_id'][$index]:0;
+//                 $temp->sub_category_menu_id = $scm;
+//                 $temp->quantity = $request['quantity'][$index];
+//                 $temp->table_id = $request->table_id;
+// //                 $temp->food_type = $request['food_type'][$index];
+//                 $temp->user_id =1;
+//               $save =   $temp->save();
 
+   $temp[] =[
+            'sub_category_menu_id'=>$scm,
+            'quantity'=> $request['quantity'][$index],
+            'table_id'=>$request->table_id,
+            'user_id'=>1
+       ];
      }
-    // $save= $temp->insert($arr);
+    $save= TempOrder::insert($temp);
     if($save)
     {
         $table = Table::findOrFail($request->table_id);
